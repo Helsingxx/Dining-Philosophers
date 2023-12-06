@@ -1,0 +1,4 @@
+if (cnt == ft_atoi(argv[1]))
+	if (!pthread_create(threads[cnt], NULL, synchronizer, args[cnt]))
+		return (printf("Creation of a thread has failed!\n"),
+		cnt);

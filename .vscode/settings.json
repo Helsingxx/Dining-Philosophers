@@ -1,0 +1,12 @@
+{
+	"files.associations": {
+		"pthread.h": "c",
+		"algorithm": "c",
+		"philosophers.h": "c",
+		"time.h": "c",
+		"stdio.h": "c",
+		"__locale": "c",
+		"ios": "c",
+		"complex": "c"
+	}
+}

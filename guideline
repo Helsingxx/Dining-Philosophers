@@ -1,0 +1,86 @@
+Protect all messages to be printed
+
+You must protect the minimum number of instructions, otherwise you risk wasting time in thread and you ruin the concept of threading!
+
+eat -> think -> sleep
+
+each philosopher has a fork to his right!
+
+// bonus: no ownership of forks! == semaphores
+
+// philosophers sleep!!
+// philosophers don't die if they don't find both forks, but instead if their time to die is elapsed and they haven't eaten
+// after the philosopher leaves the table, the forks are still on the table!
+// another thing is that here the philosophers die if time is elapsed, not if they are in deadlock!
+------------------
+DBG\
+pthread_create
+The new thread does not inherit the creating thread's alternate signal stack
+BUG: you modify the time of the day, means data race means possible security bug
+gettimeofday can return buggy address
+You can run thread_detach if you don't want the return value of the thread. detach will also kill threads when main function ends, thus it won't hang waiting for them to finish [ ! ]
+you can run thread_join if you want the process to wait for the thread to exit before exiting, and to avoid zombie threads which limit thread pool.
+
+calling pthread_create only without join or detach can be considered a memory leak?
+
+
+Thread groups were a feature added in Linux 2.4 to support the POSIX threads notion of a set of threads that share a single PID.
+Internally, this shared PID is the so-called thread group identifier (TGID) for the thread group.
+Since Linux 2.4, calls to getpid(2) return the TGID of the caller.
+
+Pthreads = Posix threads
+
+
+it is possible for a thread to access another thread's stack if they have its address
+
+// no copy mutex
+
+PTHREAD_MUTEX_INITIALIZER vs init
+
+!!!--> Many (most?) mutex implementations do not check that the mutex is released by the thread that most recently grabbed it.
+It is up to the programmer to enforce the correctness of the mutex locking/unlocking.
+Underneath the hood, locks must be implemented using hardware somehow,
+and the implementation must make use of the atomicity guarantees of the underlying hardware.
+
+1 fx | 2 f | 3 fx | 4 f | 5 fx
+1 3
+2 5
+4. 1
+--
+3 5  <- 2 is delayed
+2 4.
+--
+1 3
+2 5 <-- 2 is sped !
+4. 1
+
+1 fx | 2 f | 3 fx | 4 f | 5 fx | 6 f | 7 fx
+
+--  > no two consecutives will be ran
+--  > all pairs of forks will be used
+	deduce :
+
+
+
+-- > philosophers will always monitor each other
+-- > philosophers will block forks in a sequence, since a fork has only a single conflict, and this conflict is solved by a delay which is core to the algorithm.
+Therefore a philosopher won't start eating until or will start eating at the same time that the sequence in which he ate has been "reset".
+[Reset means the N philosophers have picked both forks.]
+This is because each philosopher relies on a another, thus pairs are filtered and whenever there is a remaining philosopher (odd case), he is called at the same time that
+the reset occurs, in which other philosophers can start eating which are not in conflict with that specific philosopher.
+
+
+1 3 5
+2 4 7
+6. -- 1 3
+--
+5 2 7
+4 6. 1
+3 --  5 7
+--
+2 4 6.
+
+100 + 100 + 100
+
+1000 
+
