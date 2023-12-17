@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 11:42:33 by eamrati           #+#    #+#             */
-/*   Updated: 2023/11/30 10:50:13 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/16 23:36:27 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,29 @@ void *common_routine(void *arg)
 
 	conv = ((t_arg *)arg)->arg;
 	philo_id = ((t_arg *)arg)->philo_id;
+	next = philo_id + 1;
 	if (philo_id == conv->nbr_philos)
 		next = 1;
-	loc_nte = conv->nbrtoeat[philo_id];
+	loc_nte = conv->nbrtoeat;
 	pthread_mutex_lock(&conv->lock_rg);
 	pthread_mutex_unlock(&conv->lock_rg);
 	if (!(philo_id % 2))
 		usleep(5);
 	while (1)
 	{
-		if (eating(conv, philo_id, next, &loc_nte) == 55)
+		if (eating(conv, philo_id, next, &loc_nte) == DONE)
 			return (NULL);
 		sleeping(conv, philo_id);
-		if (thinking(conv, philo_id) == 666)
+		if (thinking(conv, philo_id) == EXIT)
 			return (NULL);
 	}
 }
 
-void __freeall(int *nbrtoeat, pthread_t *threads, int end)
+void __freeall(pthread_t *threads, int end)
 {
 	int x;
 
 	x = 0;
-	free(nbrtoeat);
 	//while (x < end)
 	//	free(threads[x++]);
 	free(threads);
@@ -134,28 +134,15 @@ int *parse(int argc, char *argv[])
 {
 	int scount;
 	int eatcnt;
-	int *numbers;
 
 	eatcnt = 0;
 	scount = 1;
-	if (argc != 6)
+	if (argc < 5 || argc > 6)
 		return (printf("Wrong number of args\n"), NULL);
-	while (scount < argc - 1)
-		if (!is_int0(argv[scount]) || ft_atoi(argv[scount++]) < 0)
+	while (scount < argc)
+		if (!is_int0(argv[scount]) || ft_atoi(argv[scount++]) < 0) // test this later
 			return (printf("Incorrect arguments\n"), NULL);
-	scount = 0;
-	while (argv[5][scount])
-	{
-		if (!is_int(&argv[5][scount]))
-			return (printf("Incorrect arguments\n"), NULL);
-		scount += skip_int(&argv[5][scount]);
-		eatcnt++;
-	}
-	if (eatcnt != ft_atoi(argv[1]))
-		return (printf("Incorrect arguments\n"), NULL);
-	numbers =  ft_calloc(eatcnt + 1, sizeof(int));
-	// protect
-	return (philosnbrtoeat(argv, numbers));
+	return (SUCCESS);
 }
 
 void __fargs(t_arg **args, int cnt)
@@ -168,21 +155,21 @@ void __fargs(t_arg **args, int cnt)
 	free(args);
 } // to verify
 
-int max_arr(int *arr, int len)
-{
-	int x;
-	int max;
-	
-	x = 0;
-	max = arr[0];
-	while (x < len)
-	{
-		if (max < arr[x])
-			max = arr[x];
-		x++;
-	}
-	return (max);
-}
+//int max_arr(int *arr, int len)
+//{
+//	int x;
+//	int max;
+//	
+//	x = 0;
+//	max = arr[0];
+//	while (x < len)
+//	{
+//		if (max < arr[x])
+//			max = arr[x];
+//		x++;
+//	}
+//	return (max);
+//}
 
 int init_arg(t_arg *arg, char **argv)
 {
@@ -192,7 +179,7 @@ int init_arg(t_arg *arg, char **argv)
 	arg->timetoeat = ft_atoi(argv[3]);
 	arg->timetosleep = ft_atoi(argv[4]);
 	arg->exit = 0;
-	arg->to_be_eaten = max_arr(arg->nbrtoeat, arg->nbr_philos);
+	arg->to_be_eaten = ft_atoi(argv[5]);
 	arg->ate = (int *) ft_calloc(sizeof(int), arg->nbr_philos);
 	if (!arg->ate)
 		return (FAIL);
@@ -227,7 +214,7 @@ int launch_threads(pthread_t *threads, char *argv[], t_arg *arg, t_arg **fill)
 				//__fargs(args, cnt),
 				cnt);
 		cnt++;
-	}
+	}// destroy simulation if fail!
 	return (cnt);
 }
 
@@ -267,10 +254,10 @@ int init_mutexes(t_arg* arg)
 	if (pthread_mutex_init(&arg->lock_rg, NULL))
 		return (FAIL);
 	while (x < arg->nbr_philos + 1)
-		pthread_mutex_init(&arg->lock[x++], NULL);
-		return (__fmutexes(arg->lock, x), 
-			pthread_mutex_destroy(&arg->lock_rg),
-			FAIL);
+		if (pthread_mutex_init(&arg->lock[x++], NULL))
+			return (__fmutexes(arg->lock, x), 
+				pthread_mutex_destroy(&arg->lock_rg),
+				FAIL);
 	return (SUCCESS);
 }
 
@@ -281,8 +268,7 @@ int main(int argc, char *argv[])
 	t_arg *args;
 	
 	arg = (t_arg *)ft_calloc(sizeof(t_arg), 1);
-	arg->nbrtoeat = parse(argc, argv);
-	if (!arg->nbrtoeat)
+	if (parse(argc, argv))
 		return (FAIL);
 	if (!ft_atoi(argv[1]))
 		return (printf("Null simulation"), FAIL);
@@ -292,7 +278,7 @@ int main(int argc, char *argv[])
 	init_arg(arg, argv);
 	init_mutexes(arg); // Check fail
 	wait_for_threads(launch_threads(threads, argv, arg, &args), args, threads, argv);
-	return (__freeall(arg->nbrtoeat, threads, ft_atoi(argv[1])),
-			pthread_mutex_destroy(arg->lock),
+	return (__freeall(threads, ft_atoi(argv[1])),
+			pthread_mutex_destroy(arg->lock), // This should be _fmutexes
 			SUCCESS);
 }

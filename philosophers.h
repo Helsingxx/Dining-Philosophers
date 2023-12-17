@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:01:07 by eamrati           #+#    #+#             */
-/*   Updated: 2023/11/29 18:32:32 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/16 23:09:11 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_arg
 	int				gtimestamp;
 	int				*times;
 
-	int 			*nbrtoeat;
+	int 			nbrtoeat;
 	int				*ate;
 	int				*time;
 	int				exit;

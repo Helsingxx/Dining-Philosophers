@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 20:37:48 by eamrati           #+#    #+#             */
-/*   Updated: 2023/11/28 20:47:22 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/16 22:50:40 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,20 @@ int	int_tst(int max_min)
 	return (nb);
 }
 
-int	max_min_int(char *arg, int len)
+int	max_min_int(char *arg, int len, int sign)
 {
 	int	int_max;
 	int	int_min;
 
 	int_max = int_tst(INT_MIN);
 	int_min = int_tst(INT_MAX);
-	if (arg[0] == '-' || arg[0] == '+')
+	if (sign)
 		len--;
-	if ((arg[0] == '-' && int_min < len) || (arg[0] != '-' && int_max < len))
+	if ((sign == -1 && int_min < len) || (sign != -1 && int_max < len))
 		return (0);
-	else if (arg[0] == '-' && int_min == len)
+	else if (sign == -1 && int_min == len)
 		return (int_cmp(INT_MIN, arg + 1, len, -1));
-	else if (arg[0] != '-' && int_max == len)
+	else if (sign != -1 && int_max == len)
 		return (int_cmp(INT_MAX, arg, len, 1));
 	return (1);
 }
@@ -75,39 +75,28 @@ int	max_min_int(char *arg, int len)
 int	is_int0(char *arg)
 {
 	int	a;
+	int	zer;
+	int	sign;
 
+	sign = 0;
 	a = 0;
 	while (*arg == ' ')
 		arg++;
-	if (arg[a] == '-' || arg[a] == '+')
-		a++;
-	if (!arg[a] || (arg[a] > 57 || arg[a] < 48))
+	if (arg[a] == '-' )
+		sign = -1;
+	if (arg[a] == '+')
+		sign = 1;
+	a++;
+	if (arg[a] > 57 || arg[a] < 48)
 		return (0);
-	while (arg[a])
-	{
-		if (arg[a] > 57 || arg[a] < 48)
-			return (0);
+	while (arg[a] == '0')
 		a++;
-	}
-	return (max_min_int(arg, a));
-}
-
-int	is_int(char *arg)
-{
-	int	a;
-
-	a = 0;
-	while (*arg == ' ')
-		arg++;
-	if (arg[a] == '-' || arg[a] == '+')
-		a++;
-	if (!arg[a] || (arg[a] > 57 || arg[a] < 48))
+	zer = a;
+	if (arg[a] && (arg[a] > 57 || arg[a] < 48))
 		return (0);
-	while (arg[a] && arg[a] != ' ')
-	{
-		if (arg[a] > 57 || arg[a] < 48)
-			return (0);
+	while (!(arg[a] > 57 || arg[a] < 48))
 		a++;
-	}
-	return (max_min_int(arg, a));
+	if (arg[a] && (arg[a] > 57 || arg[a] < 48))
+		return (0);
+	return (max_min_int(&arg[zer], a - zer, sign));
 }

@@ -6,19 +6,23 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 21:23:44 by eamrati           #+#    #+#             */
-/*   Updated: 2023/11/29 17:27:52 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/16 22:53:32 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static long	ft_nbcmp(const char *s1, const char *s2)
+long	ft_nbcmp(const char *s1, const char *s2)
 {
-	size_t	a;
-	size_t	b;
+	int	a;
+	int	b;
 
 	b = 0;
 	a = 0;
+	while (s1[b] == '0')
+		b++;
+	s1 = &s1[b];
+	b = 0;
 	while (s1[b] >= 48 && s1[b] <= 57)
 		b++;
 	if (b > ft_strlen(s2))
