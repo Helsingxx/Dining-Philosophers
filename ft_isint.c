@@ -6,11 +6,12 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 20:37:48 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/16 22:50:40 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/18 18:26:18 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
+#include "philosophers.h"
 
 int	ft_pow(int nb, int pow)
 {
@@ -83,10 +84,9 @@ int	is_int0(char *arg)
 	while (*arg == ' ')
 		arg++;
 	if (arg[a] == '-' )
-		sign = -1;
+		sign = arg[a++] * 0 - 1;
 	if (arg[a] == '+')
-		sign = 1;
-	a++;
+		sign = arg[a++] * 0 + 1;
 	if (arg[a] > 57 || arg[a] < 48)
 		return (0);
 	while (arg[a] == '0')

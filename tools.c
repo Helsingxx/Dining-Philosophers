@@ -16,7 +16,7 @@ int	skip_int(char *arg)
 	return (a);
 }
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	int	a;
 
@@ -32,12 +32,21 @@ void chad_wastetime(int milliseconds)
 {
 	struct timeval timenow;
 	struct timeval timefirst;
+	int x;
+	int c;
 
+	c = 1;
+	x = 0;
 	gettimeofday(&timefirst, NULL);
 	gettimeofday(&timenow, NULL);
 	while (((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
 			- (timefirst.tv_sec * 1000 + timefirst.tv_usec / 1000)) < milliseconds)
-			gettimeofday(&timenow, NULL);
-	//printf("wasted %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
+	{
+		usleep(10);
+		x++;
+		gettimeofday(&timenow, NULL);
+	}
+	//gettimeofday(&timenow, NULL);
+//	printf("wasted %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
 	//		- (timefirst.tv_sec * 1000 + timefirst.tv_usec / 1000)));
 }

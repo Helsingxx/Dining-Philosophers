@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:01:07 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/16 23:09:11 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/20 15:45:16 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,17 @@
 # define SUCCESS 0
 # define DONE 50
 # define LAP 1
-# define EXIT 666
-
+# define EXIT 50
+# define ALLOW 1
+# define DENY 0
 typedef struct s_arg
 {	
 	int				philo_id;
 	pthread_mutex_t lock_printf;
-	pthread_mutex_t lock_rg;
+	pthread_mutex_t lock_readygo;
 	pthread_mutex_t *lock;
+	pthread_mutex_t lock_finish;
+	pthread_mutex_t lock_waiter;
 	int				end;
 	char			**argv;
 	
@@ -39,13 +42,15 @@ typedef struct s_arg
 	int				timetosleep;
 	int				gtimestamp;
 	int				*times;
+	int				*forks;
 
 	int 			nbrtoeat;
 	int				*ate;
 	int				*time;
 	int				exit;
+	int				finish;
 	int				to_be_eaten;
-
+	
 	struct timeval gtime;
 	struct timeval gtime2;
 	struct s_arg 	*arg;
@@ -55,13 +60,13 @@ int	is_int(char *);
 int	ft_atoi(const char *);
 int	skip_int(char *);
 void check_elapsed(int, int, t_arg *);
-int 	eating(t_arg *, int, int , int *);
+int 	eating(t_arg *, int, int);
 int		thinking(t_arg *, int);
-void 	sleeping(t_arg *, int);
+int		sleeping(t_arg *, int);
 void	*ft_calloc(size_t, size_t);
-int kill_him(t_arg *, struct timeval, int, int);
+int kill_him(t_arg *, int, int);
 int	is_int0(char *);
-size_t	ft_strlen(const char *);
+int	ft_strlen(const char *);
 void chad_wastetime(int);
 
-#endif
+#endif  
