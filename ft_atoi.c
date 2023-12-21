@@ -6,11 +6,21 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 21:23:44 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/16 22:53:32 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/21 17:46:11 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+int	ft_strlen(const char *s)
+{
+	int	a;
+
+	a = 0;
+	if (!s)
+		return (0);
+	while (s[a] != '\x00')
+		a++;
+	return (a);
+}
 
 long	ft_nbcmp(const char *s1, const char *s2)
 {

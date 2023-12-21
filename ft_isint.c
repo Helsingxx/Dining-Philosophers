@@ -6,12 +6,11 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 20:37:48 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/18 18:26:18 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/21 17:45:40 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
-#include "philosophers.h"
 
 int	ft_pow(int nb, int pow)
 {

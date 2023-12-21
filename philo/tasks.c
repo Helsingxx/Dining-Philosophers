@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 11:42:29 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/20 17:35:54 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/21 14:39:43 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int kill_him(t_arg *arg, int times)
 
 	x = 0;
 	while (x < arg->nbr_philos
-		&& !(!arg->timetodie || (arg->ate[x] < times 
+		&& !(!arg->timetodie || (arg->ate[x] < times
 		&& ((arg->ate[x] != arg->to_be_eaten
 		&& arg->to_be_eaten != -1)
 		|| arg->to_be_eaten == -1))))
@@ -33,7 +33,7 @@ int kill_him(t_arg *arg, int times)
 	return (LAP);
 }
 
-int eating(t_arg *args, int philo_id, int next)
+int eating(t_arg *args, int philo_id)
 {
 	int forks;
 

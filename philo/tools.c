@@ -16,18 +16,6 @@ int	skip_int(char *arg)
 	return (a);
 }
 
-int	ft_strlen(const char *s)
-{
-	int	a;
-
-	a = 0;
-	if (!s)
-		return (0);
-	while (s[a] != '\x00')
-		a++;
-	return (a);
-}
-
 void chad_wastetime(int milliseconds)
 {
 	struct timeval timenow;
@@ -46,5 +34,4 @@ void chad_wastetime(int milliseconds)
 		x++;
 		gettimeofday(&timenow, NULL);
 	}
-
 }

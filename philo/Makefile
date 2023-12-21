@@ -9,6 +9,7 @@ COMPILER := cc
 
 LDFLAGS := -Wall -Wextra -Werror -g -fsanitize=thread
 CFLAGS := -Wall -Wextra -Werror -g -fsanitize=thread
+VPATH := ..
 ADDITIONAL :=
 
 all: $(NAME)

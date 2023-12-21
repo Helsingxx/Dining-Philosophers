@@ -8,6 +8,8 @@
 		"__locale": "c",
 		"ios": "c",
 		"complex": "c",
-		"limits.h": "c"
+		"limits.h": "c",
+		"iterator": "c",
+		"philosophers_bonus.h": "c"
 	}
 }
