@@ -6,41 +6,29 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 11:42:29 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/20 16:53:42 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/20 17:35:54 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int kill_him(t_arg *arg, int times, int tst)
+int kill_him(t_arg *arg, int times)
 {
 	int x;
-	struct timeval timenow;
 
 	x = 0;
-	gettimeofday(&timenow, NULL);
-	printf("before while %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-			- (arg->gtime.tv_sec * 1000 + arg->gtime.tv_usec / 1000)));	
 	while (x < arg->nbr_philos
 		&& !(!arg->timetodie || (arg->ate[x] < times 
 		&& ((arg->ate[x] != arg->to_be_eaten
 		&& arg->to_be_eaten != -1)
 		|| arg->to_be_eaten == -1))))
-	{
 		x++;
-	}
-	//printf("x %d phils %d\n", x, arg->nbr_philos);
-	gettimeofday(&timenow, NULL);
-	printf("whilllleeee %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-			- (arg->gtime.tv_sec * 1000 + arg->gtime.tv_usec / 1000)));	
 	if (x != arg->nbr_philos)
 	{
-		printf("real time %d\n", tst);
 		printf("%d %d has died %d - %d\n", times * arg->timetodie, x + 1, arg->ate[x], times);
 		arg->exit = 1;
 		pthread_mutex_unlock(&arg->lock_printf);
-		//pthread_mutex_unlock(&arg->lock[arg->nbr_philos]);	
-		return (FAIL); // does not unlock. prevents segfault
+		return (FAIL);
 	}
 	return (LAP);
 }

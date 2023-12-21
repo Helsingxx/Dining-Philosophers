@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 11:42:33 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/20 16:59:07 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/20 22:18:29 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,12 @@ void  *malak_al_mawt(void *arg)
 	pthread_mutex_unlock(&conv->lock_readygo);
 	while (1)
 	{
-	//	pthread_mutex_lock(&conv->lock[conv->nbr_philos]);
 		gettimeofday(&timenow, NULL);
-		printf("check time %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-				- (conv->gtime.tv_sec * 1000 + conv->gtime.tv_usec / 1000)));
 		pthread_mutex_lock(&conv->lock_printf);
-		gettimeofday(&timenow, NULL);
-		printf("PERM time %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-				- (conv->gtime.tv_sec * 1000 + conv->gtime.tv_usec / 1000)));
-		if (kill_him(conv, (conv->timetodie && (((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-				- (conv->gtime.tv_sec * 1000 + conv->gtime.tv_usec / 1000)) / conv->timetodie)),
-				((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-				- (conv->gtime.tv_sec * 1000 + conv->gtime.tv_usec / 1000))) == FAIL)
+		if ((conv->timetodie && kill_him(conv, ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
+				- (conv->gtime.tv_sec * 1000 + conv->gtime.tv_usec / 1000)) / conv->timetodie) == FAIL) || (!conv->timetodie
+				&& kill_him(conv, 1) == FAIL))
 			return (NULL);
-		gettimeofday(&timenow, NULL);
-		printf("Before nothing here %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-				- (conv->gtime.tv_sec * 1000 + conv->gtime.tv_usec / 1000)));
 		pthread_mutex_lock(&conv->lock_finish);
 		if (conv->finish)
 		{
@@ -50,10 +40,6 @@ void  *malak_al_mawt(void *arg)
 		}
 		pthread_mutex_unlock(&conv->lock_finish);
 		pthread_mutex_unlock(&conv->lock_printf);
-	//	pthread_mutex_unlock(&conv->lock[conv->nbr_philos]);
-		gettimeofday(&timenow, NULL);
-		printf("Finish time %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-				- (conv->gtime.tv_sec * 1000 + conv->gtime.tv_usec / 1000)));
 	}
 	return (NULL);
 }
@@ -77,13 +63,10 @@ void *common_routine(void *arg)
 		usleep(100); // pay attention
 	while (1)
 	{
-		usleep(1 * philo_id);
 		if (eating(conv, philo_id, next) == DONE)
 			return (NULL);
-		usleep(1 * philo_id);
 		if (sleeping(conv, philo_id) == EXIT)
 			return (NULL);
-		usleep(1 * philo_id);
 		if (thinking(conv, philo_id) == EXIT)
 			return (NULL);
 	}
@@ -266,6 +249,8 @@ int main(int argc, char *argv[])
 		return (FAIL);
 	if (!ft_atoi(argv[1]))
 		return (printf("Null simulation"), FAIL);
+	if (ft_atoi(argv[1]) > 200)
+		return (printf("The system would not support running that number of threads!\n"), FAIL);
 	threads = (pthread_t *) ft_calloc(sizeof(pthread_t), ft_atoi(argv[1]) + 1 + 3);
 	if (!threads)
 		return (FAIL);

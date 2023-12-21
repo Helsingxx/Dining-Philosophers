@@ -46,7 +46,5 @@ void chad_wastetime(int milliseconds)
 		x++;
 		gettimeofday(&timenow, NULL);
 	}
-	//gettimeofday(&timenow, NULL);
-//	printf("wasted %ld\n", ((timenow.tv_sec * 1000 + timenow.tv_usec / 1000)
-	//		- (timefirst.tv_sec * 1000 + timefirst.tv_usec / 1000)));
+
 }
