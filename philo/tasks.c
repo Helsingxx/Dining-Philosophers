@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 11:42:29 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/26 22:29:36 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/31 11:52:44 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	kill_him(t_arg *arg, int times)
 int	declare_eating(t_arg *args, int philo_id, int next)
 {
 	pthread_mutex_lock(&args->lock_printf);
-	args->ate[philo_id - 1]++;
 	gettimeofday(&args->gtime2, NULL);
 	args->lasttimeate[philo_id - 1] = (args->gtime2.tv_sec * 1000
 			+ args->gtime2.tv_usec / 1000)
@@ -72,8 +71,11 @@ int	eating(t_arg *args, int philo_id, int next)
 	pthread_mutex_unlock(&args->lock[philo_id - 1]);
 	if (args->nbr_philos != 1)
 		pthread_mutex_unlock(&args->lock[next - 1]);
+	pthread_mutex_lock(&args->lock_printf);
+	args->ate[philo_id - 1]++;
 	if (args->ate[philo_id - 1] == args->to_be_eaten)
-		return (DONE);
+		return (pthread_mutex_unlock(&args->lock_printf), DONE);
+	pthread_mutex_unlock(&args->lock_printf);
 	return (LAP);
 }
 

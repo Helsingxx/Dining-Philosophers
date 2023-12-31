@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 11:42:33 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/26 22:15:35 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/31 12:13:22 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ int	main(int argc, char *argv[])
 			free(argv_parsed),
 			EXIT_FAILURE);
 	launch_processes(argv_parsed);
-	return (EXIT_SUCCESS);
+	return (free(argv_parsed->sem_holder),
+		free(argv_parsed),
+		EXIT_SUCCESS);
 }

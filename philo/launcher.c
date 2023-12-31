@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 22:04:54 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/26 22:30:20 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/31 12:01:15 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	*malak_al_mawt(void *arg)
 			|| (!conv->timetodie
 				&& kill_him(conv, 1) == FAIL))
 			return (NULL);
+		pthread_mutex_unlock(&conv->lock_printf);
 		if (check_finish(conv) == 0)
 			return (NULL);
-		pthread_mutex_unlock(&conv->lock_printf);
 	}
 	return (NULL);
 }

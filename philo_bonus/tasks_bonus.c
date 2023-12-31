@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 13:40:54 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/26 22:24:47 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/31 11:40:06 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,11 @@ int	eating(t_arg *arguments_from_argv)
 	take_otherfork_starteating(arguments_from_argv);
 	sem_post(semaphores->sem_forks_queue);
 	sem_post(semaphores->sem_forks_queue);
+	sem_wait(ptr->sem_holder->sem_printf);
 	ptr->ate++;
 	if (ptr->ate == ptr->to_be_eaten)
-		return (PHIL_DONE);
+		return (sem_post(ptr->sem_holder->sem_printf), PHIL_DONE);
+	sem_post(ptr->sem_holder->sem_printf);
 	return (PHIL_LAP);
 }
 

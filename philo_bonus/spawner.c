@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 18:02:42 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/26 22:19:24 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/31 12:13:31 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void	fork_handler(t_arg	*arguments_from_argv,
 
 	ptr = arguments_from_argv;
 	if (chld_pid == -1)
-		failure_create_process(ecx, launched_child_pids);
+		return (failure_create_process(ecx, launched_child_pids),
+			exit(PHIL_ABORT_PROCESS));
 	if (!chld_pid)
 	{
 		if (launch_philosopher_and_monitor(arguments_from_argv)
@@ -89,5 +90,6 @@ int	launch_processes(t_arg *arguments_from_argv)
 		ecx++;
 	}
 	wait_for_childs(launched_child_pids, arguments_from_argv->nbr_philos);
+	free(launched_child_pids);
 	return (ecx);
 }

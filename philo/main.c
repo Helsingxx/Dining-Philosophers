@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 11:42:33 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/26 22:06:01 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/31 13:23:07 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ void	*ft_calloc(size_t count, size_t size)
 int	parse(int argc, char *argv[])
 {
 	int	scount;
-	int	eatcnt;
 
-	eatcnt = 0;
 	scount = 1;
 	if (argc < 5 || argc > 6)
 		return (printf("Wrong number of args\n"), 1);
@@ -98,11 +96,11 @@ int	main(int argc, char *argv[])
 
 	arg = ft_calloc(sizeof(t_arg), 1);
 	if (parse(argc, argv))
-		return (FAIL);
+		return (free(arg), FAIL);
 	if (!ft_atoi(argv[1]))
-		return (printf("Null simulation"), FAIL);
+		return (free(arg), printf("Null simulation\n"), FAIL);
 	if (ft_atoi(argv[1]) > 200)
-		return (printf("The system would not support running"
+		return (free(arg), printf("The system would not support running"
 				" that number of threads!\n"), FAIL);
 	threads = ft_calloc(sizeof(pthread_t), ft_atoi(argv[1]) + 1 + 3);
 	if (!threads)
@@ -112,7 +110,7 @@ int	main(int argc, char *argv[])
 	if (init_mutexes(arg) == FAIL)
 		return (__freeall(threads, arg), FAIL);
 	wait_for_threads(launch_threads(threads, argv, arg), arg, threads, argv);
-	return (__fmutexes(arg->lock, arg->nbr_philos),
+	return (__fmutexes(arg->lock, arg->nbr_philos + 2),
 		pthread_mutex_destroy(&arg->lock_readygo),
 		pthread_mutex_destroy(&arg->lock_printf),
 		pthread_mutex_destroy(&arg->lock_finish),

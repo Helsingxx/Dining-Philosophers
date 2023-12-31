@@ -6,7 +6,7 @@
 /*   By: eamrati <eamrati@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 20:37:48 by eamrati           #+#    #+#             */
-/*   Updated: 2023/12/21 17:45:40 by eamrati          ###   ########.fr       */
+/*   Updated: 2023/12/31 13:18:38 by eamrati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int	max_min_int(char *arg, int len, int sign)
 	int	int_max;
 	int	int_min;
 
-	int_max = int_tst(INT_MIN);
-	int_min = int_tst(INT_MAX);
+	int_max = int_tst(INT_MAX);
+	int_min = int_tst(INT_MIN);
 	if (sign)
 		len--;
 	if ((sign == -1 && int_min < len) || (sign != -1 && int_max < len))

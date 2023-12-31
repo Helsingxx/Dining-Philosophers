@@ -10,7 +10,6 @@ COMPILER := cc
 LDFLAGS := -Wall -Wextra -Werror 
 CFLAGS := -Wall -Wextra -Werror 
 VPATH := ..
-ADDITIONAL :=
 
 all: $(NAME)
 
