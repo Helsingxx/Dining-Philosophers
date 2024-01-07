@@ -14,7 +14,7 @@ The problem was solved with heavy constraints on the use of system functions.
 
 ```
 Do not run the simulation with excessively high or low positive values,
-otherwise the simulation might fail depending on the hardware it is ran.
+otherwise the simulation might fail depending on the hardware on which it is ran.
 ```
 
 <h1> Usage </h1>
